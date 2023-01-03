@@ -1,5 +1,8 @@
 package main.java.ch.uzh.board;
 
+import main.java.ch.uzh.board.PositionState.BoatPartState;
+import main.java.ch.uzh.board.PositionState.EmptyState;
+import main.java.ch.uzh.board.PositionState.PositionState;
 import main.java.ch.uzh.boat.Boat;
 
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import java.util.regex.Pattern;
 
 public class Position {
 
+    private PositionState PosState;
     private final Column column;
     private final Row row;
     private final String unknownContent;
@@ -20,6 +24,7 @@ public class Position {
     private String statusView;
 
     public Position(Column column, Row row) {
+        this.PosState = new EmptyState();
         this.row = row;
         this.column = column;
         this.boatAtPosition = null;
@@ -38,7 +43,7 @@ public class Position {
             Column column = Column.parse(matcher.group(1));
             Row row = Row.parse(matcher.group(2));
             if (column != null && row != null) {
-                return new Position(column, row);
+                return new Position(column, row );
             }
         }
         return null;
@@ -93,19 +98,23 @@ public class Position {
         return this.boatAtPosition == null;
     }
 
-    public void placeBoat(Boat boat) {
-        this.boatAtPosition = boat;
+    public String getStatusView(){
+        return statusView;
     }
 
+    public void setStatusViewToOceanHit(){
+        this.statusView = this.oceanHit;
+    }
+    public void placeBoat(Boat boat) {
+        this.PosState = new BoatPartState();
+        this.boatAtPosition = boat;
+    }
+    public Boat getBoat() {
+        return this.boatAtPosition;
+    }
     public boolean attack() {
         this.hasBeenAttacked = true;
-        if (this.boatAtPosition != null) {
-            return this.boatAtPosition.takeHitAtPosition(this);
-        }
-        else {
-            this.statusView = oceanHit;
-            return false;
-        }
+        return PosState.attack(this);
     }
 
     public boolean wasTarget() {
@@ -113,10 +122,7 @@ public class Position {
     }
 
     public String revealContent(GridType gridType) {
-        if ((this.boatAtPosition != null) && (gridType == GridType.OCEAN_GRID || gridType == GridType.CHEAT_GRID || this.hasBeenAttacked)) {
-            return this.boatAtPosition.showStatusAtPosition(this, gridType);
-        }
-        return this.statusView;
+        return PosState.revealContent(gridType, this);
     }
 
     public Row getRow() {

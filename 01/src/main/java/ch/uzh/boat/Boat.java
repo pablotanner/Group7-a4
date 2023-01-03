@@ -1,8 +1,11 @@
 package main.java.ch.uzh.boat;
 
+import main.java.ch.uzh.board.BoatState.BoatState;
+import main.java.ch.uzh.board.BoatState.FloatingBoatState;
 import main.java.ch.uzh.board.Direction;
 import main.java.ch.uzh.board.GridType;
 import main.java.ch.uzh.board.Position;
+import main.java.ch.uzh.board.BoatState.DestroyedBoatState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +16,7 @@ public abstract class Boat {
      * Maybe we only have to count the number of hits and not store position.
      * We must make sure, that a position can only be shot once!
      */
-
+    private BoatState boatState;
     private boolean isDestroyed;
     private final String type;
     private final String representator;
@@ -23,6 +26,7 @@ public abstract class Boat {
     private int hitCount;
 
     public Boat(String type, String representator, int size) {
+        boatState = new FloatingBoatState();
         this.type = type;
         this.representator = representator;
         this.size = size;
@@ -37,10 +41,24 @@ public abstract class Boat {
         }
     }
 
+    public String getDamage(){
+        return damage;
+    }
+    public String getRepresentator(){
+        return representator;
+    }
+
+    public List<Position> getSpan(){
+        //Returns a copy of the span since this method should only be used for the contains method.
+        List<Position> SpanCopy = new ArrayList<>(span);
+        return SpanCopy;
+    }
+
     public boolean takeHitAtPosition(Position position) {
         if (span.contains(position)) {
             span.remove(position);
             if (span.isEmpty()) {
+                boatState = new DestroyedBoatState();
                 this.isDestroyed = true;
             }
         }
@@ -48,24 +66,7 @@ public abstract class Boat {
     }
 
     public String showStatusAtPosition(Position position, GridType gridType) {
-        if (gridType == GridType.OCEAN_GRID) {
-            // Show X for damaged positions, representator for all other positions
-            if (span.contains(position)) {
-                return this.representator;
-            }
-            else {
-                return this.damage;
-            }
-        }
-        else {
-            // Only show damaged positions; show representator if destroyed completely
-            if (this.isDestroyed) {
-                return this.representator;
-            }
-            else {
-                return this.damage;
-            }
-        }
+        return boatState.showStatusAtPosition(position, gridType);
     }
 
     public boolean fitsBetween(Position start, Position end) {
