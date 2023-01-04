@@ -35,6 +35,12 @@ public class Position {
         this.statusView = this.unknownContent;
     }
 
+    public String getOceanHit() {
+        return oceanHit;
+    }
+    public String getUnknownContent() {
+        return unknownContent;
+    }
     public static Position parse(String position) {
         String regex = "([A-Z]+)([0-9]+)";
         Pattern pattern = Pattern.compile(regex);

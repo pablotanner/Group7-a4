@@ -7,15 +7,16 @@ public class FloatingBoatState implements BoatState {
     @Override
     public String showStatusAtPosition(Position position, GridType gridType) {
         if(gridType == GridType.OCEAN_GRID){
-            // Show X for damaged positions, representator for all other positions
+            // If Position hasn't been hit display representator
             if(position.getBoat().getSpan().contains(position)){
                 return position.getBoat().getRepresentator();
             }
             else{
+                // If Position has been hit display "X"
                 return position.getBoat().getDamage();
             }
         }
-        // Only show damaged positions
+        // if Target Grid and Boat took damage but not destroyed
         return position.getBoat().getDamage();
     }
 }
