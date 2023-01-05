@@ -1,13 +1,14 @@
 package main.java.ch.uzh.boat;
 
-import main.java.ch.uzh.board.BoatState.BoatState;
-import main.java.ch.uzh.board.BoatState.FloatingBoatState;
+import main.java.ch.uzh.boat.BoatState.BoatState;
+import main.java.ch.uzh.boat.BoatState.FloatingBoatState;
 import main.java.ch.uzh.board.Direction;
 import main.java.ch.uzh.board.GridType;
 import main.java.ch.uzh.board.Position;
-import main.java.ch.uzh.board.BoatState.DestroyedBoatState;
+import main.java.ch.uzh.boat.BoatState.DestroyedBoatState;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Boat {
@@ -50,8 +51,7 @@ public abstract class Boat {
 
     public List<Position> getSpan(){
         //Returns a copy of the span since this method should only be used for the contains method.
-        List<Position> SpanCopy = new ArrayList<>(span);
-        return SpanCopy;
+        return Collections.unmodifiableList(span);
     }
 
     public boolean takeHitAtPosition(Position position) {

@@ -1,4 +1,4 @@
-package main.java.ch.uzh.board.BoatState;
+package main.java.ch.uzh.boat.BoatState;
 
 import main.java.ch.uzh.board.GridType;
 import main.java.ch.uzh.board.Position;
