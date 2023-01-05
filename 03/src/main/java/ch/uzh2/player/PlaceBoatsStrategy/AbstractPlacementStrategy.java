@@ -3,12 +3,13 @@ package main.java.ch.uzh2.player.PlaceBoatsStrategy;
 import main.java.ch.uzh2.board.Grid;
 import main.java.ch.uzh2.board.Position;
 import main.java.ch.uzh2.boat.*;
+import main.java.ch.uzh2.player.IPlayer;
 
 import java.util.InputMismatchException;
 
 public class AbstractPlacementStrategy implements IPlacementStrategy{
 
-    public void placeBoats(Fleet fleet, Grid grid){}
+    public void placeBoats(Fleet fleet, Grid grid, IPlayer player){}
 
     protected void placeOneBoat(Boat boat, Grid grid, Position start, Position end){
 

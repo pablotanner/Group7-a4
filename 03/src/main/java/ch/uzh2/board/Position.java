@@ -1,6 +1,9 @@
 package main.java.ch.uzh2.board;
 
 import main.java.ch.uzh2.boat.Boat;
+import main.java.ch.uzh2.player.HumanPlayer1;
+import main.java.ch.uzh2.player.HumanPlayer2;
+import main.java.ch.uzh2.player.IPlayer;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -112,9 +115,12 @@ public class Position {
         return this.hasBeenAttacked;
     }
 
-    public String revealContent(GridType gridType) {
-        if ((this.boatAtPosition != null) && (gridType == GridType.OCEAN_GRID || gridType == GridType.CHEAT_GRID || this.hasBeenAttacked)) {
-            return this.boatAtPosition.showStatusAtPosition(this, gridType);
+    public String revealContent(GridType gridType, IPlayer player) {
+        if ((player instanceof HumanPlayer1)&&(this.boatAtPosition != null) && (gridType == GridType.PLAYER1_GRID|| this.hasBeenAttacked)) {
+            return this.boatAtPosition.showStatusAtPosition(this, gridType,player);
+        }
+        else if ((player instanceof HumanPlayer2)&&(this.boatAtPosition != null) && ( gridType == GridType.PLAYER2_GRID|| this.hasBeenAttacked)) {
+            return this.boatAtPosition.showStatusAtPosition(this, gridType,player);
         }
         return this.statusView;
     }

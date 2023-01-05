@@ -9,11 +9,14 @@ import main.java.ch.uzh2.board.Position;
 public interface IPlayer {
     void assignGrid(Grid grid);
     void placeFleet();
+
+
     void shootAt(IPlayer opponent);
     void takeShotAt(Position position);
     Boolean fleetIsAlive();
-    String getName();
     Position getRandomGridPosition();
     boolean wasAttackedAtPosition(Position position);
     String showGridContent(GridType gridType);
+
+    void assignOpponentGrid(Grid player1grid);
 }

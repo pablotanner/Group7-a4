@@ -1,5 +1,6 @@
 package main.java.ch.uzh2.player.AttackStrategy;
 
+import main.java.ch.uzh2.player.HumanPlayer1;
 import main.java.ch.uzh2.player.IPlayer;
 import main.java.ch.uzh2.board.Position;
 
@@ -10,12 +11,14 @@ public class HumanPlayerAttack extends AbstractAttackStrategy{
     public HumanPlayerAttack() {}
 
     @Override
-    public void shootAt(IPlayer opponent) {
+    public void shootAt(IPlayer player,IPlayer opponent) {
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
 
         while(true){
             try{
-                System.out.println("Please enter the position to shoot at.");
+                if (player instanceof HumanPlayer1)
+                System.out.printf("This is Player1's turn.\n Please enter the position to shoot at.\n");
+                else System.out.printf("This is Player2's turn.\n Please enter the position to shoot at.\n");
                 String input = scanner.nextLine();  // Read user input
                 verifyInput(input);
 

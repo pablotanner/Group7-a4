@@ -3,6 +3,9 @@ package main.java.ch.uzh2.boat;
 import main.java.ch.uzh2.board.Direction;
 import main.java.ch.uzh2.board.GridType;
 import main.java.ch.uzh2.board.Position;
+import main.java.ch.uzh2.player.HumanPlayer1;
+import main.java.ch.uzh2.player.HumanPlayer2;
+import main.java.ch.uzh2.player.IPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +50,8 @@ public abstract class Boat {
         return this.isDestroyed;
     }
 
-    public String showStatusAtPosition(Position position, GridType gridType) {
-        if (gridType == GridType.OCEAN_GRID) {
+    public String showStatusAtPosition(Position position, GridType gridType, IPlayer player) {
+        if (((player instanceof HumanPlayer2)&&(gridType == GridType.PLAYER2_GRID)) ||((player instanceof HumanPlayer1)&&gridType == GridType.PLAYER1_GRID)) {
             // Show X for damaged positions, representator for all other positions
             if (span.contains(position)) {
                 return this.representator;
@@ -66,6 +69,7 @@ public abstract class Boat {
                 return this.damage;
             }
         }
+
     }
 
     public boolean fitsBetween(Position start, Position end) {

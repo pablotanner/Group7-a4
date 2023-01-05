@@ -1,6 +1,9 @@
 package main.java.ch.uzh2.board;
 
 import main.java.ch.uzh2.boat.Boat;
+import main.java.ch.uzh2.player.AbstractPlayer;
+import main.java.ch.uzh2.player.HumanPlayer1;
+import main.java.ch.uzh2.player.IPlayer;
 
 import java.util.*;
 
@@ -50,7 +53,7 @@ public class Grid {
     }
 
 
-    public String showGridContent(GridType gridType) {
+    public String showGridContent(GridType gridType, IPlayer player) {
         List<String> columnParts = new ArrayList<>();
         List<String> rowParts = new ArrayList<>();
 
@@ -70,7 +73,7 @@ public class Grid {
             columnParts.clear();
             columnParts.add(pRow[0].getRow().toString());
             for (Position p : pRow) {
-                columnParts.add(p.revealContent(gridType));
+                columnParts.add(p.revealContent(gridType,player));
             }
             columnParts.add(pRow[0].getRow().toString());
             rowParts.add(String.join("|", columnParts));

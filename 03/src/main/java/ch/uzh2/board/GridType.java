@@ -2,23 +2,27 @@ package main.java.ch.uzh2.board;
 
 
 public enum GridType {
-  TARGET_GRID,
-  OCEAN_GRID,
-  CHEAT_GRID;
+  PLAYER1_GRID,
+  PLAYER2_GRID;
 
-  @Override
+
+  /*@Override
   public String toString() {
     String title = "Unknown";
     switch (this) {
-      case TARGET_GRID:
-        title = "Target Grid";
+      case PLAYER1_GRID_PLAYER1_PERSPECTIVE:
+        title = "PLAYER1: Player's Grid";
         break;
-      case OCEAN_GRID:
-        title = "Ocean Grid";
+      case PLAYER1_GRID_PLAYER2_PERSPECTIVE:
+        title = "PLAYER2: Opponent's Grid";
         break;
-      case CHEAT_GRID:
-        title = "Cheat Grid";
+      case PLAYER2_GRID_PLAYER1_PERSPECTIVE:
+        title = "PLAYER1: Opponent's Grid";
+        break;
+      case PLAYER2_GRID_PLAYER2_PERSPECTIVE:
+        title = "PLAYER2: Player's Grid";
+        break;
     }
     return title;
-  }
+  }*/
 }

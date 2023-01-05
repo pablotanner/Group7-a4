@@ -1,6 +1,7 @@
 package main.java.ch.uzh2.game;
 
-import main.java.ch.uzh2.player.HumanPlayer;
+import main.java.ch.uzh2.player.HumanPlayer1;
+import main.java.ch.uzh2.player.HumanPlayer2;
 import main.java.ch.uzh2.player.IPlayer;
 import main.java.ch.uzh2.board.*;
 
@@ -17,8 +18,8 @@ public class Game {
 
     public void setup() {
         // Set-up Phase
-        Grid player1grid = new Grid(GridType.OCEAN_GRID.toString());
-        Grid player2grid = new Grid(GridType.TARGET_GRID.toString());
+        Grid player1grid = new Grid(GridType.PLAYER1_GRID.toString());
+        Grid player2grid = new Grid(GridType.PLAYER2_GRID.toString());
         this.players[0].assignGrid(player1grid);
         this.players[1].assignGrid(player2grid);
 
@@ -32,10 +33,15 @@ public class Game {
         int defenderId = nextPlayerAfter(attackerId);
 
         while (this.players[attackerId].fleetIsAlive()) {
-            if (this.players[attackerId] instanceof HumanPlayer) {
-                System.out.println(players[defenderId].showGridContent(GridType.TARGET_GRID));
+            if (this.players[attackerId] instanceof HumanPlayer1 ) {
+                System.out.println(players[attackerId].showGridContent(GridType.PLAYER1_GRID));
                 System.out.printf("%n-----------------------%n%n");
-                System.out.println(players[attackerId].showGridContent(GridType.OCEAN_GRID));
+                System.out.println(players[defenderId].showGridContent(GridType.PLAYER1_GRID));
+            }
+            else if(this.players[attackerId] instanceof HumanPlayer2 ) {
+                System.out.println(players[attackerId].showGridContent(GridType.PLAYER2_GRID));
+                System.out.printf("%n-----------------------%n%n");
+                System.out.println(players[defenderId].showGridContent(GridType.PLAYER2_GRID));
             }
             players[attackerId].shootAt(players[defenderId]);
 
@@ -61,11 +67,13 @@ public class Game {
 
     private void displayEndOfGame(IPlayer currentUser, IPlayer opponent, IPlayer winner) {
         // Game finished => defender has won
-        System.out.println(opponent.showGridContent(GridType.OCEAN_GRID));
+        System.out.println(currentUser.showGridContent(GridType.PLAYER1_GRID));
         System.out.printf("%n-----------------------%n%n");
-        System.out.println(currentUser.showGridContent(GridType.OCEAN_GRID));
+        System.out.println(opponent.showGridContent(GridType.PLAYER2_GRID));
         System.out.println();
         System.out.println("GAME OVER!");
-        System.out.printf("%s has won!%n", winner.getName());
+        if (winner instanceof HumanPlayer1) {
+            System.out.println("The winner is Player1!");}
+        else System.out.println("The winner is Player2!");
     }
 }

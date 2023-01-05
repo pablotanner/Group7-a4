@@ -8,35 +8,39 @@ import main.java.ch.uzh2.board.Position;
 import main.java.ch.uzh2.boat.Fleet;
 
 
-abstract class AbstractPlayer implements IPlayer {
+public abstract class AbstractPlayer implements IPlayer {
     private final IPlacementStrategy placeStrategy;
     private final IAttackStrategy attackStrategy;
     private Grid grid;
+    private Grid opponentgrid;
     private final Fleet fleet;
-    private final String name;
 
-    AbstractPlayer(IPlacementStrategy placeStrategy, IAttackStrategy attackStrategy, Fleet fleet, String name) {
+
+    AbstractPlayer(IPlacementStrategy placeStrategy, IAttackStrategy attackStrategy, Fleet fleet) {
         this.placeStrategy = placeStrategy;
         this.attackStrategy = attackStrategy;
         this.fleet = fleet;
-        this.name = name;
     }
 
     @Override
     public void assignGrid(Grid grid) {
         this.grid = grid;
     }
+    public void assignOpponentGrid(Grid grid) {
+        this.opponentgrid = grid;
+    }
     @Override
     public void placeFleet() {
         if (this.grid == null) {
             throw new IllegalStateException("You have to assign a Grid to the Player before calling this method!");
         }
-        placeStrategy.placeBoats(this.fleet, this.grid);
+        placeStrategy.placeBoats(this.fleet, this.grid,this);
     }
+
 
     @Override
     public void shootAt(IPlayer opponent) {
-        attackStrategy.shootAt(opponent);
+        attackStrategy.shootAt(this,opponent);
     }
 
     @Override
@@ -49,10 +53,6 @@ abstract class AbstractPlayer implements IPlayer {
         return fleet.stillStanding();
     }
 
-    @Override
-    public String getName() {
-        return this.name;
-    }
 
     @Override
     public Position getRandomGridPosition() {
@@ -75,6 +75,6 @@ abstract class AbstractPlayer implements IPlayer {
         if (this.grid == null) {
             throw new IllegalStateException("You have to assign a Grid to the Player before calling this method!");
         }
-        return this.grid.showGridContent(gridType);
+        return this.grid.showGridContent(gridType,this);
     }
 }
