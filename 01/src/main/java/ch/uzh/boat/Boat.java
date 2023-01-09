@@ -1,14 +1,13 @@
 package main.java.ch.uzh.boat;
 
 import main.java.ch.uzh.boat.BoatState.BoatState;
-import main.java.ch.uzh.boat.BoatState.FloatingBoatState;
+import main.java.ch.uzh.boat.BoatState.NotDestroyedState;
 import main.java.ch.uzh.board.Direction;
 import main.java.ch.uzh.board.GridType;
 import main.java.ch.uzh.board.Position;
-import main.java.ch.uzh.boat.BoatState.DestroyedBoatState;
+import main.java.ch.uzh.boat.BoatState.IsDestroyedState;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class Boat {
@@ -17,6 +16,8 @@ public abstract class Boat {
      * Maybe we only have to count the number of hits and not store position.
      * We must make sure, that a position can only be shot once!
      */
+    private BoatState isDestroyedState;
+    private BoatState notDestroyedState;
     private BoatState boatState;
     private boolean isDestroyed;
     private final String type;
@@ -27,13 +28,33 @@ public abstract class Boat {
     private int hitCount;
 
     public Boat(String type, String representator, int size) {
-        boatState = new FloatingBoatState();
+        isDestroyedState = new IsDestroyedState(this);
+        notDestroyedState = new NotDestroyedState(this);
+        boatState = notDestroyedState;
         this.type = type;
         this.representator = representator;
         this.size = size;
         this.hitCount = 0;
         this.isDestroyed = false;
         this.damage = "X";
+    }
+    public BoatState getBoatState(){
+        return boatState;
+    }
+    public void setBoatState(BoatState state){
+        boatState = state;
+    }
+
+    public BoatState getIsDestroyedState(){
+        return isDestroyedState;
+    }
+
+    public BoatState getNotDestroyedState(){
+        return notDestroyedState;
+    }
+
+    public void markAsDestroyed(){
+        isDestroyed = true;
     }
 
     public void expandSize(Position position) {
@@ -50,19 +71,11 @@ public abstract class Boat {
     }
 
     public List<Position> getSpan(){
-        //Returns a copy of the span since this method should only be used for the contains method.
-        return Collections.unmodifiableList(span);
+        return span;
     }
 
     public boolean takeHitAtPosition(Position position) {
-        if (span.contains(position)) {
-            span.remove(position);
-            if (span.isEmpty()) {
-                boatState = new DestroyedBoatState();
-                this.isDestroyed = true;
-            }
-        }
-        return this.isDestroyed;
+        return boatState.takeHitAtPosition(position);
     }
 
     public String showStatusAtPosition(Position position, GridType gridType) {

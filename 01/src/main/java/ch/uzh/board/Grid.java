@@ -113,6 +113,16 @@ public class Grid {
         return this.board[randomRow][randomCol];
     }
 
+    public Position getRandomPositionExcept(Position position){
+        Random rand = new Random();
+        int randomRow = rand.nextInt(this.rows);
+        int randomCol = rand.nextInt(this.columns);
+        while(this.board[randomRow][randomCol].equals(position)){
+            randomRow = rand.nextInt(this.rows);
+            randomCol = rand.nextInt(this.columns);
+        }
+        return this.board[randomRow][randomCol];
+    }
 
     /**
      * Returns this Grid's own Position object at generic position passed to the function

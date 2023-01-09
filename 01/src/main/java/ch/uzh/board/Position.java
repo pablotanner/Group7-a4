@@ -1,8 +1,9 @@
 package main.java.ch.uzh.board;
 
-import main.java.ch.uzh.board.PositionState.BoatPartState;
-import main.java.ch.uzh.board.PositionState.EmptyState;
+import main.java.ch.uzh.board.PositionState.ContainsBoatState;
+import main.java.ch.uzh.board.PositionState.ContainsDamagedBoatState;
 import main.java.ch.uzh.board.PositionState.PositionState;
+import main.java.ch.uzh.board.PositionState.ContainsWaterState;
 import main.java.ch.uzh.boat.Boat;
 
 import java.util.ArrayList;
@@ -12,8 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Position {
-
-    private PositionState PosState;
+    private PositionState containsWaterState;
+    private PositionState containsBoatState;
+    private PositionState containsDamagedBoatState;
+    private PositionState state;
     private final Column column;
     private final Row row;
     private final String unknownContent;
@@ -24,7 +27,10 @@ public class Position {
     private String statusView;
 
     public Position(Column column, Row row) {
-        this.PosState = new EmptyState();
+        this.containsBoatState = new ContainsBoatState(this);
+        this.containsWaterState = new ContainsWaterState(this);
+        this.containsDamagedBoatState = new ContainsDamagedBoatState(this);
+        this.state = containsWaterState;
         this.row = row;
         this.column = column;
         this.boatAtPosition = null;
@@ -35,6 +41,21 @@ public class Position {
         this.statusView = this.unknownContent;
     }
 
+    public void setState(PositionState state){
+        this.state = state;
+    }
+    public PositionState getContainsDamagedBoatState(){
+        return containsDamagedBoatState;
+    }
+    public PositionState getContainsBoatState() {
+        return containsBoatState;
+    }
+    public PositionState getContainsWaterState() {
+        return containsWaterState;
+    }
+    public PositionState getState() {
+        return state;
+    }
     public String getOceanHit() {
         return oceanHit;
     }
@@ -112,7 +133,12 @@ public class Position {
         this.statusView = this.oceanHit;
     }
     public void placeBoat(Boat boat) {
-        this.PosState = new BoatPartState();
+        state.placeBoat(boat);
+    }
+    public void setBoatAtPosition(Boat boat){
+        if(boat == null){
+            throw new IllegalArgumentException("Boat must not be null");
+        }
         this.boatAtPosition = boat;
     }
     public Boat getBoat() {
@@ -120,7 +146,7 @@ public class Position {
     }
     public boolean attack() {
         this.hasBeenAttacked = true;
-        return PosState.attack(this);
+        return state.attack();
     }
 
     public boolean wasTarget() {
@@ -128,7 +154,7 @@ public class Position {
     }
 
     public String revealContent(GridType gridType) {
-        return PosState.revealContent(gridType, this);
+        return state.revealContent(gridType);
     }
 
     public Row getRow() {

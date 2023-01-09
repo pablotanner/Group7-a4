@@ -22,13 +22,18 @@ public class HumanPlayerPlacement extends AbstractPlacementStrategy{
             boolean success = false;
 
             while(!success){
-                //System.out.println(grid.showGridContent(GridType.OCEAN_GRID));
                 try{
-                    if(player instanceof HumanPlayer1)
-                    System.out.printf("This is Player1's turn.\nPlease enter the starting and ending position for your %s (size %d), separated by comma.%n",
-                            boat.toString(), boat.getSize());
-                    else System.out.printf("This is Player2's turn.\nPlease enter the starting and ending position for your %s (size %d), separated by comma.%n",
-                            boat.toString(), boat.getSize());
+                    if(player instanceof HumanPlayer1){
+                        System.out.println(grid.showGridContent(GridType.PLAYER1_GRID, player));
+                        System.out.printf("This is Player1's turn.\nPlease enter the starting and ending position for your %s (size %d), separated by comma.%n",
+                                boat.toString(), boat.getSize());
+
+                    }
+                    else{
+                        System.out.println(grid.showGridContent(GridType.PLAYER2_GRID, player));
+                        System.out.printf("This is Player2's turn.\nPlease enter the starting and ending position for your %s (size %d), separated by comma.%n",
+                                boat.toString(), boat.getSize());
+                    }
                     String userInput = scanner.nextLine();  // Read user input
                     Position[] boatPositions = parseInput(userInput);
                     placeOneBoat(boat, grid, boatPositions[0], boatPositions[1]);
