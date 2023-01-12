@@ -12,7 +12,7 @@ public abstract class AbstractPlayer implements IPlayer {
     private final IPlacementStrategy placeStrategy;
     private final IAttackStrategy attackStrategy;
     private Grid grid;
-    private Grid opponentgrid;
+    private Grid opponentGrid;
     private final Fleet fleet;
 
 
@@ -26,9 +26,7 @@ public abstract class AbstractPlayer implements IPlayer {
     public void assignGrid(Grid grid) {
         this.grid = grid;
     }
-    public void assignOpponentGrid(Grid grid) {
-        this.opponentgrid = grid;
-    }
+
     @Override
     public void placeFleet() {
         if (this.grid == null) {

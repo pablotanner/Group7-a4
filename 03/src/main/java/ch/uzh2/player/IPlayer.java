@@ -18,5 +18,4 @@ public interface IPlayer {
     boolean wasAttackedAtPosition(Position position);
     String showGridContent(GridType gridType);
 
-    void assignOpponentGrid(Grid player1grid);
 }

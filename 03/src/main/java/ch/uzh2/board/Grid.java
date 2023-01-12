@@ -1,8 +1,6 @@
 package main.java.ch.uzh2.board;
 
 import main.java.ch.uzh2.boat.Boat;
-import main.java.ch.uzh2.player.AbstractPlayer;
-import main.java.ch.uzh2.player.HumanPlayer1;
 import main.java.ch.uzh2.player.IPlayer;
 
 import java.util.*;
