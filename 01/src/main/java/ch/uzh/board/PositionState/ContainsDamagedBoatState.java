@@ -13,7 +13,8 @@ public class ContainsDamagedBoatState implements PositionState {
 
     @Override
     public boolean attack() {
-        throw new IllegalStateException("Position is already hit.");
+        //Does nothing, returns false but this is never reached.
+        return false;
     }
 
     @Override
@@ -22,7 +23,6 @@ public class ContainsDamagedBoatState implements PositionState {
     }
     @Override
     public void placeBoat(Boat boat) {
-        throw new IllegalStateException("Position already contains a Boat.");
+        //Does nothing
     }
-
 }

@@ -113,6 +113,7 @@ public class Grid {
         return this.board[randomRow][randomCol];
     }
 
+    //For testing, to get two different Random Positions.
     public Position getRandomPositionExcept(Position position){
         Random rand = new Random();
         int randomRow = rand.nextInt(this.rows);

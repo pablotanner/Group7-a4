@@ -13,9 +13,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Position {
-    private PositionState containsWaterState;
-    private PositionState containsBoatState;
-    private PositionState containsDamagedBoatState;
+    private final PositionState containsWaterState;
+    private final PositionState containsBoatState;
+    private final PositionState containsDamagedBoatState;
     private PositionState state;
     private final Column column;
     private final Row row;
@@ -37,11 +37,14 @@ public class Position {
         this.hasBeenAttacked = false;
         this.unknownContent = " ";
         this.oceanHit = "o";
-
         this.statusView = this.unknownContent;
     }
 
     public void setState(PositionState state){
+        //Check pre-conditions
+        if(state == null){
+            throw new IllegalArgumentException("State must not be null");
+        }
         this.state = state;
     }
     public PositionState getContainsDamagedBoatState(){
@@ -56,10 +59,35 @@ public class Position {
     public PositionState getState() {
         return state;
     }
-    public String getOceanHit() {
+
+    //Handled by State:
+    public boolean attack() {
+        //Check pre-conditions
+        if(hasBeenAttacked){
+            throw new IllegalArgumentException("Position cannot be attacked twice.");
+        }
+        this.hasBeenAttacked = true;
+        return state.attack();
+    }
+    public String revealContent(GridType gridType) {
+        //Check pre-conditions
+        if(gridType == null){
+            throw new IllegalArgumentException("GridType must not be null");
+        }
+        return state.revealContent(gridType);
+    }
+    public void placeBoat(Boat boat) {
+        //Check pre-conditions
+        if(boat == null){
+            throw new IllegalArgumentException("Boat must not be null");
+        }
+        state.placeBoat(boat);
+    }
+
+    public String getOceanHitSymbol() {
         return oceanHit;
     }
-    public String getUnknownContent() {
+    public String getUnknownContentSymbol() {
         return unknownContent;
     }
     public static Position parse(String position) {
@@ -129,34 +157,26 @@ public class Position {
         return statusView;
     }
 
+    //For ContainsWaterState
     public void setStatusViewToOceanHit(){
         this.statusView = this.oceanHit;
     }
-    public void placeBoat(Boat boat) {
-        state.placeBoat(boat);
-    }
     public void setBoatAtPosition(Boat boat){
+        //Check pre-conditions
         if(boat == null){
             throw new IllegalArgumentException("Boat must not be null");
+        }
+        if(this.boatAtPosition != null){
+            throw new IllegalArgumentException("Position already contains a boat");
         }
         this.boatAtPosition = boat;
     }
     public Boat getBoat() {
         return this.boatAtPosition;
     }
-    public boolean attack() {
-        this.hasBeenAttacked = true;
-        return state.attack();
-    }
-
     public boolean wasTarget() {
         return this.hasBeenAttacked;
     }
-
-    public String revealContent(GridType gridType) {
-        return state.revealContent(gridType);
-    }
-
     public Row getRow() {
         return row;
     }

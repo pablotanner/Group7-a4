@@ -30,9 +30,9 @@ public class NotDestroyedState implements BoatState {
     @Override
     public boolean takeHitAtPosition(Position position) {
         if (boat.getSpan().contains(position)) {
-            boat.getSpan().remove(position);
+            boat.removePositionFromSpan(position);
             if (boat.getSpan().isEmpty()) {
-                boat.setBoatState(position.getBoat().getIsDestroyedState());
+                boat.setBoatState(boat.getIsDestroyedState());
                 boat.markAsDestroyed();
             }
         }

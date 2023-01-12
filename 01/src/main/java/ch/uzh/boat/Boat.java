@@ -8,6 +8,7 @@ import main.java.ch.uzh.board.Position;
 import main.java.ch.uzh.boat.BoatState.IsDestroyedState;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Boat {
@@ -16,8 +17,8 @@ public abstract class Boat {
      * Maybe we only have to count the number of hits and not store position.
      * We must make sure, that a position can only be shot once!
      */
-    private BoatState isDestroyedState;
-    private BoatState notDestroyedState;
+    private final BoatState isDestroyedState;
+    private final BoatState notDestroyedState;
     private BoatState boatState;
     private boolean isDestroyed;
     private final String type;
@@ -38,11 +39,14 @@ public abstract class Boat {
         this.isDestroyed = false;
         this.damage = "X";
     }
+    public void setBoatState(BoatState state){
+        if(state == null){
+            throw new IllegalArgumentException("State must not be null");
+        }
+        boatState = state;
+    }
     public BoatState getBoatState(){
         return boatState;
-    }
-    public void setBoatState(BoatState state){
-        boatState = state;
     }
 
     public BoatState getIsDestroyedState(){
@@ -53,10 +57,29 @@ public abstract class Boat {
         return notDestroyedState;
     }
 
+    //Handled by State:
+    public boolean takeHitAtPosition(Position position) {
+        //Check pre-conditions
+        if(position == null){
+            throw new IllegalArgumentException("Position must not be null");
+        }
+        return boatState.takeHitAtPosition(position);
+    }
+
+    public String showStatusAtPosition(Position position, GridType gridType) {
+        //Check pre-conditions
+        if(position == null){
+            throw new IllegalArgumentException("Position must not be null");
+        }
+        if(gridType == null){
+            throw new IllegalArgumentException("GridType must not be null");
+        }
+        return boatState.showStatusAtPosition(position, gridType);
+    }
+
     public void markAsDestroyed(){
         isDestroyed = true;
     }
-
     public void expandSize(Position position) {
         if (!span.contains(position)) {
             span.add(position);
@@ -71,15 +94,19 @@ public abstract class Boat {
     }
 
     public List<Position> getSpan(){
-        return span;
+        //Return a copy of the span (for checking size, contains, etc.) to not break encapsulation
+        return Collections.unmodifiableList(span);
     }
 
-    public boolean takeHitAtPosition(Position position) {
-        return boatState.takeHitAtPosition(position);
-    }
-
-    public String showStatusAtPosition(Position position, GridType gridType) {
-        return boatState.showStatusAtPosition(position, gridType);
+    public void removePositionFromSpan(Position position){
+        //Check pre-conditions
+        if(!span.contains(position)){
+            throw new IllegalArgumentException("Position not in span");
+        }
+        if(position == null){
+            throw new IllegalArgumentException("Position must not be null");
+        }
+        span.remove(position);
     }
 
     public boolean fitsBetween(Position start, Position end) {

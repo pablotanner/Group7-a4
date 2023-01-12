@@ -20,7 +20,8 @@ public class IsDestroyedState implements BoatState {
 
     @Override
     public boolean takeHitAtPosition(Position position) {
-        throw new IllegalStateException("Boat is already destroyed");
+        //Does nothing, returns true (since destroyed) but this is never reached.
+        return true;
     }
 }
 

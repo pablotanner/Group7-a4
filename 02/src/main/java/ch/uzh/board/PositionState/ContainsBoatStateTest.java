@@ -18,11 +18,6 @@ public class ContainsBoatStateTest {
     Boat boat = new PatrolBoat();
 
     @Test
-    void testPlaceBoatInvalid(){
-        assertThrows(IllegalStateException.class, () -> containsBoatState.placeBoat(boat));
-    }
-
-    @Test
     void testAttackHitBoatReturnsFalse(){
         randomPosition1.placeBoat(boat);
         randomPosition2.placeBoat(boat);
@@ -39,7 +34,7 @@ public class ContainsBoatStateTest {
     @Test
     void testRevealContentBoatHidden(){
         grid.putBoatAtPosition(boat, randomPosition1);
-        assertEquals(randomPosition1.getUnknownContent(), containsBoatState.revealContent(GridType.TARGET_GRID));
+        assertEquals(randomPosition1.getUnknownContentSymbol(), containsBoatState.revealContent(GridType.TARGET_GRID));
     }
 
     @Test

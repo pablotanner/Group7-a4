@@ -31,8 +31,4 @@ public class IsDestroyedStateTest {
         assertEquals(boat.getRepresentator(), isDestroyedState.showStatusAtPosition(randomPosition1, GridType.TARGET_GRID));
     }
 
-    @Test
-    void testTakeHitAtPositionThrowsException(){
-        assertThrows(IllegalStateException.class, () -> isDestroyedState.takeHitAtPosition(randomPosition1));
-    }
 }

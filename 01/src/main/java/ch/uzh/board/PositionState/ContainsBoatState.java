@@ -28,7 +28,7 @@ public class ContainsBoatState implements PositionState {
 
     @Override
     public void placeBoat(Boat boat) {
-        throw new IllegalStateException("Position already contains a Boat.");
+        //Does nothing
     }
 
 }

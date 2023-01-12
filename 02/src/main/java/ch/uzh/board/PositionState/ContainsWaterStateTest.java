@@ -15,23 +15,23 @@ public class ContainsWaterStateTest {
 
     @Test
     void testAttackReturnsFalse(){
-        assertEquals(randomPosition.getStatusView(), randomPosition.getUnknownContent());
+        assertEquals(randomPosition.getStatusView(), randomPosition.getUnknownContentSymbol());
         assertFalse(containsWaterState.attack());
-        assertEquals(randomPosition.getStatusView(), randomPosition.getOceanHit());
+        assertEquals(randomPosition.getStatusView(), randomPosition.getOceanHitSymbol());
     }
 
     @Test
     void testRevealContentNoHit(){
-        assertEquals(containsWaterState.revealContent(GridType.TARGET_GRID), randomPosition.getUnknownContent());
-        assertEquals(containsWaterState.revealContent(GridType.OCEAN_GRID), randomPosition.getUnknownContent());
-        assertEquals(containsWaterState.revealContent(GridType.CHEAT_GRID), randomPosition.getUnknownContent());
+        assertEquals(containsWaterState.revealContent(GridType.TARGET_GRID), randomPosition.getUnknownContentSymbol());
+        assertEquals(containsWaterState.revealContent(GridType.OCEAN_GRID), randomPosition.getUnknownContentSymbol());
+        assertEquals(containsWaterState.revealContent(GridType.CHEAT_GRID), randomPosition.getUnknownContentSymbol());
     }
     @Test
     void testRevealContentMiss(){
         containsWaterState.attack();
-        assertEquals(containsWaterState.revealContent(GridType.TARGET_GRID), randomPosition.getOceanHit());
-        assertEquals(containsWaterState.revealContent(GridType.OCEAN_GRID), randomPosition.getOceanHit());
-        assertEquals(containsWaterState.revealContent(GridType.CHEAT_GRID), randomPosition.getOceanHit());
+        assertEquals(containsWaterState.revealContent(GridType.TARGET_GRID), randomPosition.getOceanHitSymbol());
+        assertEquals(containsWaterState.revealContent(GridType.OCEAN_GRID), randomPosition.getOceanHitSymbol());
+        assertEquals(containsWaterState.revealContent(GridType.CHEAT_GRID), randomPosition.getOceanHitSymbol());
     }
 
     @Test

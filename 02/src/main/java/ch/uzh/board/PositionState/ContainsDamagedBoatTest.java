@@ -17,21 +17,13 @@ public class ContainsDamagedBoatTest {
     PositionState containsDamagedBoatState = randomPosition1.getContainsDamagedBoatState();
     Boat boat = new PatrolBoat();
 
-    @Test
-    void testPlaceRaisesException(){
-        assertThrows(IllegalStateException.class, () -> containsDamagedBoatState.placeBoat(boat));
-    }
-
-    @Test
-    void testAttackRaisesException(){
-        assertThrows(IllegalStateException.class, () -> containsDamagedBoatState.attack());
-    }
 
     @Test
     void testRevealContentBoatHit(){
         grid.putBoatAtPosition(boat, randomPosition1);
         grid.putBoatAtPosition(boat, randomPosition2);
         randomPosition1.attack();
+        //Should display "X" on both Grids.
         assertEquals(boat.getDamage(), containsDamagedBoatState.revealContent(GridType.TARGET_GRID));
         assertEquals(boat.getDamage(), containsDamagedBoatState.revealContent(GridType.OCEAN_GRID));
     }
@@ -40,6 +32,7 @@ public class ContainsDamagedBoatTest {
     void testRevealContentBoatDestroyedOceanGrid(){
         grid.putBoatAtPosition(boat, randomPosition1);
         randomPosition1.attack();
+        //On Player Grid (the visible grid) destroyed and damaged boat positions look the same ("X").
         assertEquals(boat.getDamage(), containsDamagedBoatState.revealContent(GridType.OCEAN_GRID));
     }
 
@@ -47,6 +40,7 @@ public class ContainsDamagedBoatTest {
     void testRevealContentBoatDestroyedTargetGrid(){
         grid.putBoatAtPosition(boat, randomPosition1);
         randomPosition1.attack();
+        //On Ocean Grid (enemy grid) destroyed boat positions are displayed with the Boat representator symbol
         assertEquals(boat.getRepresentator(), containsDamagedBoatState.revealContent(GridType.TARGET_GRID));
     }
 }
